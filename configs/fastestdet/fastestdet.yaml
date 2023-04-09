@@ -1,0 +1,6 @@
+weights : "models/fastestdet/weights/weight_AP05:0.253207_280-epoch.pth"
+names   : "configs/fastestdet/fastestdet.names"
+classes : 80
+input_size : 
+      height : 352
+      width :  352
