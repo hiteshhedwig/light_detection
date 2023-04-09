@@ -41,7 +41,7 @@ class FastestDet():
         return self.model(image)
     
     def postprocess(self, original_image, preds, 
-                    thresh, device="cpu"):
+                    thresh, device="cpu", debug=True):
         
         output = tools.handle_preds(
                             preds  = preds,
@@ -50,6 +50,8 @@ class FastestDet():
                             )
         
         H, W, _ = original_image.shape
+
+        self.model_parsed_output = output[0]
 
         for box in output[0]:
             box = box.tolist()
@@ -60,9 +62,10 @@ class FastestDet():
             x1, y1 = int(box[0] * W), int(box[1] * H)
             x2, y2 = int(box[2] * W), int(box[3] * H)
 
-            cv2.rectangle(original_image, (x1, y1), (x2, y2), (255, 255, 0), 2)
-            cv2.putText(original_image, '%.2f' % obj_score, (x1, y1 - 5), 0, 0.7, (0, 255, 0), 2)	
-            cv2.putText(original_image, category, (x1, y1 - 25), 0, 0.7, (0, 255, 0), 2)
+            if debug :
+                cv2.rectangle(original_image, (x1, y1), (x2, y2), (255, 255, 0), 2)
+                cv2.putText(original_image, '%.2f' % obj_score, (x1, y1 - 5), 0, 0.7, (0, 255, 0), 2)	
+                cv2.putText(original_image, category, (x1, y1 - 25), 0, 0.7, (0, 255, 0), 2)
 
         return original_image
 
